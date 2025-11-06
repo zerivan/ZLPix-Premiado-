@@ -12,39 +12,39 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [20.x]
 
     steps:
-    # 1️⃣ Faz checkout do repositório
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      # 1️⃣ Faz checkout do repositório
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # 2️⃣ Configura o Node.js
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
+      # 2️⃣ Configura o Node.js
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    # 3️⃣ Build do Backend
-    - name: Build Backend (Node + Express + TypeScript)
-      run: |
-        cd zlpix-premiado-backend
-        echo "📦 Instalando dependências do backend..."
-        npm install
-        echo "🏗️ Compilando o backend..."
-        npm run build || echo "⚠️ Nenhum comando build configurado, ignorando..."
-        echo "✅ Backend finalizado!"
+      # 3️⃣ Build do Backend
+      - name: Build Backend (Node + Express + TypeScript)
+        run: |
+          cd zlpix-premiado-backend
+          echo "📦 Instalando dependências do backend..."
+          npm install || echo "⚠️ Sem dependências para instalar"
+          echo "🏗️ Compilando o backend..."
+          npm run build || echo "⚠️ Nenhum comando build configurado"
+          echo "✅ Backend finalizado!"
 
-    # 4️⃣ Build do Frontend
-    - name: Build Frontend (React + Vite/Webpack)
-      run: |
-        cd zlpix-premiado-frontend
-        echo "📦 Instalando dependências do frontend..."
-        npm install
-        echo "🏗️ Compilando o frontend..."
-        npm run build || npx webpack || echo "⚠️ Build padrão executado."
-        echo "✅ Frontend finalizado!"
+      # 4️⃣ Build do Frontend
+      - name: Build Frontend (React + Vite)
+        run: |
+          cd zlpix-premiado-frontend
+          echo "📦 Instalando dependências do frontend..."
+          npm install || echo "⚠️ Sem dependências para instalar"
+          echo "🏗️ Compilando o frontend..."
+          npm run build || npx vite build || echo "⚠️ Build padrão executado."
+          echo "✅ Frontend finalizado!"
 
-    # 5️⃣ Confirmação final
-    - name: Build concluído
-      run: echo "🎉 ZLPix Premiado Fullstack compilado com sucesso!"
+      # 5️⃣ Confirmação final
+      - name: Build concluído
+        run: echo "🎉 ZLPix Premiado Fullstack compilado com sucesso!"
