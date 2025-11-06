@@ -15,7 +15,7 @@ jobs:
         node-version: [20.x]
 
     steps:
-      # 1️⃣ Faz checkout do repositório
+      # 1️⃣ Checkout do repositório
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -27,22 +27,22 @@ jobs:
 
       # 3️⃣ Build do Backend
       - name: Build Backend (Node + Express + TypeScript)
+        working-directory: ./zlpix-premiado-backend
         run: |
-          cd zlpix-premiado-backend
           echo "📦 Instalando dependências do backend..."
-          npm install || echo "⚠️ Sem dependências para instalar"
+          npm install
           echo "🏗️ Compilando o backend..."
           npm run build || echo "⚠️ Nenhum comando build configurado"
           echo "✅ Backend finalizado!"
 
       # 4️⃣ Build do Frontend
       - name: Build Frontend (React + Vite)
+        working-directory: ./zlpix-premiado-frontend
         run: |
-          cd zlpix-premiado-frontend
           echo "📦 Instalando dependências do frontend..."
-          npm install || echo "⚠️ Sem dependências para instalar"
+          npm install
           echo "🏗️ Compilando o frontend..."
-          npm run build || npx vite build || echo "⚠️ Build padrão executado."
+          npm run build || npx vite build || echo "⚠️ Build padrão executado"
           echo "✅ Frontend finalizado!"
 
       # 5️⃣ Confirmação final
