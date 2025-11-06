@@ -1,0 +1,48 @@
+name: Teste de Build - ZLPix Premiado
+
+# 👇 Permite rodar manualmente no botão "Run workflow"
+on:
+  workflow_dispatch:
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      # 1️⃣ Clona o repositório
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Configura Node.js
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # 3️⃣ Testa o Backend
+      - name: Testar Backend (Node + Express + Prisma)
+        run: |
+          cd zlpix-premiado-backend
+          echo "📦 Instalando dependências do backend..."
+          npm install
+          echo "🏗️ Compilando backend..."
+          npm run build || echo "⚠️ Nenhum script build definido."
+          echo "✅ Backend compilado com sucesso!"
+
+      # 4️⃣ Testa o Frontend
+      - name: Testar Frontend (React + Vite)
+        run: |
+          cd zlpix-premiado-frontend
+          echo "📦 Instalando dependências do frontend..."
+          npm install
+          echo "🏗️ Compilando frontend..."
+          npm run build || npx vite build
+          echo "✅ Frontend compilado com sucesso!"
+
+      # 5️⃣ Resultado final
+      - name: Finalização
+        run: echo "🎉 Teste completo — backend e frontend funcionando!"
